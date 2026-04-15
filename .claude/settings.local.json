@@ -15,7 +15,23 @@
       "Bash(gh repo:*)",
       "Bash(gh auth:*)",
       "Bash(gh api:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(python3 /Users/daniel/Desktop/figma-builder/.claude/protect-figma-refs.py)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__8efe0c63-6598-4bf3-8fda-6c07c4a85f10__use_figma|mcp__8efe0c63-6598-4bf3-8fda-6c07c4a85f10__create_design_system_rules|mcp__8efe0c63-6598-4bf3-8fda-6c07c4a85f10__add_code_connect_map|mcp__8efe0c63-6598-4bf3-8fda-6c07c4a85f10__send_code_connect_mappings|mcp__8efe0c63-6598-4bf3-8fda-6c07c4a85f10__generate_diagram",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$PWD/.claude/protect-figma-refs.py\"",
+            "timeout": 10,
+            "statusMessage": "Verificando proteção de arquivos de referência..."
+          }
+        ]
+      }
     ]
   }
 }
