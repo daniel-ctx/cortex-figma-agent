@@ -120,6 +120,47 @@ Após criar, adicione um **sticky note** ao lado de cada variação com:
 
 ## REGRAS DE DESIGN
 
+### Tamanho de frame padrão
+- Toda tela nova usa **1440 × 780px** como tamanho padrão de criação
+- O frame pode ser esticado pelo usuário depois — 1440×780 é o ponto de partida fixo
+
+### Nomenclatura de frames (obrigatório)
+Cada frame criado deve seguir o padrão `Tipo - Label`:
+
+| Tipo de elemento | Padrão de nome |
+|---|---|
+| Tela principal | `Screen - Label` |
+| Modal / dialog | `Modal - Label` |
+| Menu / dropdown | `Menu - Label` |
+| Drawer / painel lateral | `Drawer - Label` |
+| Tooltip | `Tooltip - Label` |
+| Toast / notificação | `Toast - Label` |
+| Empty state | `Empty - Label` |
+
+`Label` deve ser descritivo e em português, ex: `Screen - Mapa de Territórios`.
+
+### Organização de fluxos
+Quando criar 2 ou mais telas de um mesmo fluxo:
+- Alinhe todas pelo **topo** (mesma posição Y)
+- Espaçamento horizontal de **100px** entre cada frame
+- Acima do primeiro frame do fluxo, crie um **texto de título do fluxo**:
+  - Fonte: REM
+  - Tamanho: **300**
+  - Conteúdo: nome do fluxo em caixa alta, ex: `CONFIGURAÇÃO DE ALERTAS`
+  - Posição: alinhado à esquerda do primeiro frame, acima com folga suficiente para não colidir
+
+### Tipografia
+- **Títulos e headings:** REM (todas as variações — Regular, Medium, SemiBold)
+- **Textos corridos, labels, botões, tabelas:** Open Sans
+- Use apenas os estilos de texto definidos no design system (Nova identidade Cortex)
+- Nunca defina tamanho, peso ou família manualmente fora dos tokens
+
+### Cores
+- **Cor primária:** Violeta 500 (token da Nova identidade Cortex)
+- **Neutro para texto:** Dark Gray (token da Nova identidade Cortex)
+- Extraia os valores hex atuais lendo o arquivo Nova identidade Cortex antes de criar
+- Nunca use valores de cor arbitrários — sempre via token
+
 ### Componentes
 - Use **sempre** componentes do DSR GUI Components via instância
 - Se um componente necessário não existir no DSR, crie-o localmente no arquivo de trabalho
@@ -138,9 +179,8 @@ Após criar, adicione um **sticky note** ao lado de cada variação com:
 - Referencie pelo nome exato do componente
 - Tamanhos permitidos: 16px, 20px, 24px, 32px
 
-### Nomenclatura de layers
+### Nomenclatura de layers internos
 ```
-frame principal:     [prefixo-oferta] nome-da-tela — variação-a
 sections:            section/nome-da-secao
 frames internos:     frame/nome-do-bloco
 componentes:         [nome do componente DSR exato]
@@ -148,7 +188,7 @@ grupos:              group/nome-do-grupo
 textos soltos:       text/nome-descritivo
 ```
 
-Prefixos por oferta: `[geo]` · `[gro]` · `[bra]` · `[rea]` · `[out]`
+Prefixos por oferta nos layers: `[geo]` · `[gro]` · `[bra]` · `[rea]` · `[out]`
 
 ### Organização
 - Sempre use **frames**, nunca grupos soltos como container principal
