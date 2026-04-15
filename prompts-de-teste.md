@@ -1,125 +1,118 @@
-# Prompts de teste — Figma Screen Builder
+# Prompts de teste — Cortex Figma Agent
 
-Use estes prompts na ordem sugerida para validar que o agente está
-funcionando corretamente antes de partir para demandas reais.
-
----
-
-## Nível 1 — Leitura e observação
-
-### Teste 1.1 — Verificar acesso ao design system
-```
-Leia o arquivo DSR GUI Components e liste os 10 componentes mais relevantes
-para telas de análise de dados geoespaciais. Para cada um, informe o nome
-exato do componente e uma descrição de quando usá-lo.
-```
-
-### Teste 1.2 — Verificar acesso ao projeto Geofusion
-```
-Acesse o projeto Geofusion e liste os arquivos disponíveis. Para o arquivo
-mais recente, descreva a estrutura de páginas e os principais padrões de
-layout que você identificou.
-```
-
-### Teste 1.3 — Verificar tokens de identidade
-```
-Leia o arquivo Nova identidade Cortex e extraia:
-- Paleta de cores principal com os hex codes
-- Família tipográfica e escalas de tamanho
-- Tokens de espaçamento definidos
-```
+Suite de validação para confirmar que o agente está configurado corretamente
+antes de usar em demandas reais. Execute em ordem — cada nível depende do anterior.
 
 ---
 
-## Nível 2 — Criação simples
+## Nível 1 — Leitura e observação (valida acesso ao Figma)
 
-### Teste 2.1 — Tela básica (modal)
-```
-Crie 2 variações de um modal de confirmação para a ação "Excluir área de
-influência" no Geofusion. O modal deve ter título, descrição do impacto da
-ação, e botões de cancelar e confirmar.
+Esses testes confirmam que o token está correto e o agente consegue ler os
+arquivos de referência. Se falharem, o setup não está completo.
 
-Use apenas componentes do DSR. Crie no arquivo de trabalho, em uma nova
-página chamada "Teste — Modal exclusão — [data de hoje]".
+**Teste 1.1 — DSR GUI Components**
 ```
+Leia o arquivo DSR GUI Components e liste 10 componentes disponíveis,
+agrupados por categoria (ex: inputs, navegação, feedback, dados).
+```
+✅ Esperado: lista de componentes reais como Table, Button, Tab Group, Input Text, Menu Filter.
+❌ Falha: componentes genéricos ou erro de acesso → verifique `FIGMA_ACCESS_TOKEN`.
 
-### Teste 2.2 — Tela com dados
+**Teste 1.2 — Projeto de uma oferta**
 ```
-Crie 2 variações de um card de resumo de ponto de interesse (POI) para o
-painel lateral do Geofusion. O card deve exibir: nome do POI, categoria,
-endereço, e 3 métricas numéricas (fluxo mensal, raio de influência, score).
+Acesse o projeto Geofusion no Figma e liste os 5 arquivos modificados mais
+recentemente, com data e uma frase descrevendo o que cada um parece ser.
+```
+✅ Esperado: lista com nomes reais de arquivos do projeto (ex: Pulso Urbano V1, Mobilidade V2).
+❌ Falha: erro de acesso → sua conta Figma não tem acesso ao time Cortex.
 
-Use apenas componentes e ícones do design system Cortex.
+**Teste 1.3 — Nova identidade Cortex**
 ```
+Leia o arquivo Nova identidade Cortex e liste as principais cores da paleta
+com os hex codes, a família tipográfica principal e os tokens de espaçamento.
+```
+✅ Esperado: paleta com hexes reais (ex: `#540B6E`, `#009F7F`), fontes REM e Open Sans.
+❌ Falha: valores arbitrários ou erro → problema no `FIGMA_IDENTITY_FILE_ID`.
 
 ---
 
-## Nível 3 — Criação a partir de PRD
+## Nível 2 — Criação simples (valida escrita no Figma)
 
-### Teste 3.1 — Tela a partir de requisitos
+Esses testes confirmam que o agente consegue criar conteúdo no arquivo de trabalho.
+Execute um de cada vez, verificando o resultado no Figma após cada prompt.
+
+**Teste 2.1 — Modal de confirmação (Geofusion)**
 ```
-Você receberá o seguinte requisito funcional:
+Crie 2 variações de um modal de confirmação de exclusão de território salvo
+no Geofusion. Variação A: padrão destrutivo com botão vermelho. Variação B:
+abordagem mais suave com etapa de confirmação por digitação do nome.
+```
+✅ Esperado: 2 frames no `[GEO] Screen Builder — Rascunhos` com sticky notes.
+
+**Teste 2.2 — Card de resultado (Growth)**
+```
+Crie 2 variações de um card de empresa em lista de prospecção no Growth.
+Mostre: nome, segmento, cidade, score de fit e ações rápidas.
+```
+✅ Esperado: 2 frames no `[GRO] Screen Builder — Rascunhos`.
 
 ---
-FUNCIONALIDADE: Filtro avançado de camadas do mapa
-USUÁRIO: Analista de expansão
-CONTEXTO: O usuário precisa filtrar múltiplas camadas de dados simultâneas
-no mapa (ex: concorrentes, fluxo de pessoas, renda per capita) com controle
-granular por categoria e faixa de valor.
 
-REQUISITOS:
-- Selecionar/deselecionar camadas individualmente
-- Ajustar opacidade de cada camada (0–100%)
-- Filtrar por faixa de valor em camadas numéricas
-- Salvar configuração de filtros como preset
-- Ver preview do impacto no mapa antes de aplicar
+## Nível 3 — Criação a partir de contexto real
 
-RESTRIÇÕES:
-- Não pode cobrir mais de 30% da área do mapa
-- Deve fechar ao clicar fora ou pressionar ESC
----
+**Teste 3.1 — Geofusion (a partir de referência existente)**
+```
+Acesse o arquivo mais recente do projeto Geofusion. Identifique o padrão de
+header e painel lateral. Com base nesses padrões, crie 2 variações de tela
+para configuração de camadas de dados no mapa — o usuário ativa/desativa
+camadas e ajusta parâmetros de visualização.
+```
 
-Gere 3 variações de tela para essa funcionalidade. Crie no arquivo de
-trabalho em uma nova página chamada "Exploração — Filtro de camadas — [data]".
-Para cada variação, adicione um sticky note com o racional de design.
+**Teste 3.2 — Reach (a partir de demanda descrita)**
+```
+Crie 3 variações de tela de comparativo de períodos para o Reach.
+O usuário seleciona dois períodos e compara: sessões, taxa de conversão,
+taxa de rejeição e conversão de meta. Variações devem ser arquiteturalmente
+distintas (não apenas visuais).
+```
+
+**Teste 3.3 — Brand (com mapa + comparativo)**
+```
+Crie 2 variações de tela de seleção de pontos de mídia OOH para o Brand.
+O usuário filtra por tipo de mídia, audiência mínima e raio de abrangência,
+e seleciona pontos diretamente no mapa ou em lista.
 ```
 
 ---
 
 ## Nível 4 — Edição e iteração
 
-### Teste 4.1 — Editar variação existente
+**Teste 4.1 — Refinamento de variação**
 ```
-Na página "Exploração — Filtro de camadas" que você criou, pegue a Variação A
-e faça os seguintes ajustes:
-- Aumente o padding interno dos itens de lista para 16px
-- Adicione um estado de hover visível nos itens de camada
-- Mova o botão "Salvar como preset" para o rodapé do painel, fixo
-Mantenha a Variação A original intacta e crie uma cópia chamada "Variação A2 — ajustes".
+Pegue a Variação A criada no Teste 2.1. Faça os seguintes ajustes:
+- Aumente o espaçamento interno do modal para 32px
+- Mova os botões para a esquerda
+- Adicione um ícone de alerta no título
+Documente as alterações no sticky note existente.
 ```
 
-### Teste 4.2 — Comparar com tela existente
+**Teste 4.2 — Consistência com padrão existente**
 ```
-Acesse uma tela de painel lateral existente no projeto Geofusion.
-Compare com a Variação B do filtro de camadas que você criou e liste
-3 inconsistências de padrão visual que precisam ser corrigidas.
-Depois corrija-as na Variação B diretamente no Figma.
+Compare a tela criada no Teste 3.1 com o padrão de header encontrado no
+projeto Geofusion. Identifique 3 inconsistências e corrija no frame.
 ```
 
 ---
 
-## Como usar estes testes
+## Flags de problema
 
-1. Execute os testes do Nível 1 primeiro — se falharem, há problema de
-   configuração de token ou acesso aos arquivos
-2. Só avance para Nível 2 após Nível 1 passar completamente
-3. O Nível 3 é o teste real de qualidade — analise se as variações são
-   genuinamente distintas e se os componentes foram usados corretamente
-4. O Nível 4 valida o ciclo de iteração, que é onde o agente gera mais valor
+Se algum comportamento abaixo ocorrer, o setup tem um problema específico:
 
-## Sinais de que algo está errado
-
-- Agente cria elementos sem usar componentes do DSR → token de leitura sem acesso
-- Variações são cosmeticamente iguais → ajustar CLAUDE.md, seção de variações
-- Layers sem nome → reforçar regra de nomenclatura no CLAUDE.md
-- Agente não encontra o arquivo de trabalho → verificar FIGMA_WORKING_FILE_ID
+| Comportamento | Causa provável |
+|---|---|
+| Componentes genéricos (não do DSR) | Token sem `file_content:write` |
+| Variações visualmente idênticas | Regras de variação não foram lidas pelo agente |
+| Layers sem nome | `CLAUDE.md` não foi carregado corretamente |
+| Agente não encontra arquivo de trabalho | `FIGMA_*_WORKING_FILE_ID` incorreto ou em branco |
+| Agente pergunta qual oferta em todo prompt | Contexto não está claro — seja explícito no prompt |
+| Erro "You don't have access" | Conta Figma sem acesso ao time Cortex |
