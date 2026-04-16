@@ -45,8 +45,9 @@ O arquivo de trabalho é sempre fornecido pelo usuário no chat — não existe 
    - Ex: `"adiciona ao arquivo Filtros de Camada"` → encontre e adicione uma nova página
 2. **Usuário especifica file ID** → use diretamente
    - Ex: `"usa o arquivo x7q0fUseWU..."` → use esse ID
-3. **Usuário pede arquivo novo explicitamente** → crie com a convenção abaixo
+3. **Usuário pede arquivo novo explicitamente** → crie imediatamente com a convenção abaixo, sem verificar projetos ativos; o novo arquivo passa a ser o ativo
    - Ex: `"cria um arquivo novo para isso"`
+   - **Não** cheque `projects/.active` nem pergunte sobre o projeto em curso — pule direto para a criação
 4. **Nenhuma instrução sobre arquivo** → crie um novo arquivo automaticamente
 
 ### Convenção de nome para arquivos novos
