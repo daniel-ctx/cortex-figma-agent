@@ -22,6 +22,52 @@ descrições em texto livre — para qualquer oferta da Cortex.
 
 ---
 
+## PROTÓTIPO HTML
+
+Use a skill `/prototype` para gerar um protótipo HTML navegável a partir de um design ou fluxo no Figma.
+
+### Quando usar
+
+- Usuário fornece link Figma + pede "prototipa", "gera o HTML", "exporta para browser"
+- Resultado entregável é um arquivo HTML estático que simula a navegação entre telas
+
+### Como funciona
+
+1. Lê o design via `get_design_context` (estrutura de nós) + `get_screenshot` (fallback visual)
+2. Mapeia componentes Claude System → classes semânticas Tailwind via `design-system/html-bridge.json`
+3. Aplica tokens Cortex via `design-system/cortex-tailwind-config.js` + `design-system/cortex-components.css`
+4. Gera um `index.html` self-contained com Tailwind CDN + navegação entre telas por setas ou botões
+
+### Arquivos de referência do sistema
+
+| Arquivo | Papel |
+|---|---|
+| `design-system/html-bridge.json` | Mapeamento componente → HTML+Tailwind — expandir a cada novo protótipo |
+| `design-system/cortex-components.css` | Classes semânticas (`.btn-primary`, `.input-text`, etc.) |
+| `design-system/cortex-tailwind-config.js` | Tokens de cor, tipografia e espaçamento Cortex |
+
+### Output
+
+```
+prototypes/{oferta-kebab}-{descricao-kebab}-{dd-mm-aaaa}/
+  index.html    ← abre direto no browser, sem servidor
+```
+
+### Compartilhamento
+
+```bash
+open prototypes/{pasta}/index.html        # abrir localmente
+npx serve prototypes/{pasta}              # gerar URL local para compartilhar
+```
+
+### Fidelidade evolutiva
+
+O mapeamento em `html-bridge.json` cresce a cada protótipo gerado. Componentes sem mapeamento
+são aproximados visualmente. Ao encontrar um componente catalogável não presente no bridge,
+adicioná-lo após a geração.
+
+---
+
 ## ARQUIVOS DE REFERÊNCIA (somente leitura)
 
 Os arquivos de design system são compartilhados entre todas as ofertas. Nunca edite esses arquivos.

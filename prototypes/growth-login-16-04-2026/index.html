@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Growth — Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=REM:wght@400;500;600&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: #1a1229;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── screens ── */
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .screen.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* ── card ── */
+    .login-card {
+      position: absolute;
+      top: 156px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 440px;
+      height: 469px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0px 12px 40px 0px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ── inputs ── */
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field label {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      color: #2d292e;
+      line-height: 16px;
+    }
+    .field .input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border: 1px solid #d5d3d9;
+      border-radius: 8px;
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .field .input-wrap:focus-within {
+      border-color: #5c33c7;
+      box-shadow: 0 0 0 3px rgba(92, 51, 199, 0.12);
+    }
+    .field.error .input-wrap {
+      border-color: #d92d20;
+      box-shadow: 0 0 0 3px rgba(217, 45, 32, 0.1);
+    }
+    .field input {
+      flex: 1;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      color: #2d292e;
+      border: none;
+      outline: none;
+      background: transparent;
+      line-height: 16px;
+    }
+    .field input::placeholder { color: #7a7581; }
+    .field .helper {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 11px;
+      color: #7a7581;
+      line-height: 16px;
+      display: none;
+    }
+    .field.error .helper { display: block; color: #d92d20; }
+
+    /* ── eye button ── */
+    .eye-btn {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #aaa5b0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: color 0.15s;
+    }
+    .eye-btn:hover { color: #7a7581; }
+
+    /* ── primary button ── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 6px 16px;
+      background: #8418ab;
+      color: #fff;
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      border: none;
+      border-radius: 9999px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, opacity 0.15s;
+    }
+    .btn-primary:hover:not(:disabled) { background: #6e118f; }
+    .btn-primary:disabled { opacity: 0.6; cursor: default; }
+
+    /* ── shake ── */
+    @keyframes shake {
+      0%,100% { transform: translateX(-50%); }
+      20%      { transform: translateX(calc(-50% - 6px)); }
+      40%      { transform: translateX(calc(-50% + 6px)); }
+      60%      { transform: translateX(calc(-50% - 4px)); }
+      80%      { transform: translateX(calc(-50% + 4px)); }
+    }
+    .login-card.shake { animation: shake 0.35s ease; }
+
+    /* ── dashboard ── */
+    #screen-dashboard {
+      flex-direction: column;
+      background: #1a1229;
+    }
+    .topbar {
+      height: 56px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      gap: 16px;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .topbar-logo {
+      font-family: 'Open Sans', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      color: #808087;
+      letter-spacing: 2px;
+    }
+    .avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: #5c33c7;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .dash-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+    }
+    .dash-inner {
+      max-width: 720px;
+      width: 100%;
+      text-align: center;
+    }
+    .dash-icon {
+      width: 64px; height: 64px;
+      border-radius: 16px;
+      background: rgba(92,51,199,0.12);
+      border: 1px solid rgba(92,51,199,0.25);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 32px;
+    }
+    .dash-title {
+      font-family: 'REM', sans-serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .dash-sub {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 14px;
+      color: #7a7581;
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+    .dash-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .dash-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: left;
+    }
+    .dash-card-label {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 11px;
+      color: #7a7581;
+      letter-spacing: 1.5px;
+      margin-bottom: 10px;
+    }
+    .dash-card-value {
+      font-family: 'REM', sans-serif;
+      font-size: 28px;
+      color: #fff;
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 9999px;
+      color: #aaa5b0;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 12px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.3); color: #fff; }
+
+    /* ── fade in ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .screen.active { animation: fadeUp 0.25s ease forwards; }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════ TELA 1 — LOGIN ═══════════════ -->
+  <div id="screen-login" class="screen active" style="background:#1a1229;">
+
+    <div class="login-card" id="login-card">
+
+      <!-- label -->
+      <p style="position:absolute;top:40px;left:40px;
+                font-family:'Open Sans',sans-serif;font-weight:600;
+                font-size:11px;color:#808087;letter-spacing:2px;white-space:nowrap;">
+        CORTEX INTELLIGENCE
+      </p>
+
+      <!-- accent bar -->
+      <div style="position:absolute;top:65px;left:40px;
+                  width:40px;height:4px;background:#5c33c7;border-radius:2px;"></div>
+
+      <!-- title -->
+      <p style="position:absolute;top:93px;left:40px;width:360px;
+                font-family:'REM',sans-serif;font-weight:400;font-size:24px;
+                color:#1a1a1f;line-height:normal;">
+        Acesse sua conta
+      </p>
+
+      <!-- email -->
+      <div class="field" id="field-email"
+           style="position:absolute;top:161px;left:40px;width:242px;">
+        <label for="input-email">E-mail</label>
+        <div class="input-wrap">
+          <input id="input-email" type="email"
+                 placeholder="seu@email.com" autocomplete="email" />
+        </div>
+        <span class="helper">Informe seu e-mail.</span>
+      </div>
+
+      <!-- senha -->
+      <div class="field" id="field-senha"
+           style="position:absolute;top:253px;left:40px;width:242px;">
+        <label for="input-senha">Senha</label>
+        <div class="input-wrap">
+          <input id="input-senha" type="password"
+                 placeholder="••••••••" autocomplete="current-password" />
+          <button class="eye-btn" onclick="toggleSenha()" aria-label="Mostrar senha">
+            <svg id="eye-icon" width="16" height="16" viewBox="0 0 20 20"
+                 fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 4C5.5 4 2 10 2 10s3.5 6 8 6 8-6 8-6-3.5-6-8-6z"
+                    stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              <circle cx="10" cy="10" r="2.5"
+                      stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </button>
+        </div>
+        <span class="helper">Informe sua senha.</span>
+      </div>
+
+      <!-- esqueci -->
+      <a href="#" style="position:absolute;top:333px;left:260px;
+                         font-family:'Open Sans',sans-serif;font-size:12px;
+                         color:#5c33c7;text-decoration:none;white-space:nowrap;"
+         onmouseover="this.style.textDecoration='underline'"
+         onmouseout="this.style.textDecoration='none'">
+        Esqueci minha senha
+      </a>
+
+      <!-- botão entrar -->
+      <div style="position:absolute;top:373px;left:40px;">
+        <button class="btn-primary" id="btn-entrar" onclick="handleLogin()">
+          Entrar
+        </button>
+      </div>
+
+      <!-- footer -->
+      <p style="position:absolute;top:425px;left:40px;
+                font-family:'Open Sans',sans-serif;font-size:12px;
+                color:#99999e;white-space:nowrap;">
+        Primeiro acesso? Fale com seu gerente de conta.
+      </p>
+
+    </div>
+  </div>
+
+
+  <!-- ═══════════════ TELA 2 — DASHBOARD ═══════════════ -->
+  <div id="screen-dashboard" class="screen">
+
+    <!-- topbar -->
+    <div class="topbar">
+      <span class="topbar-logo">CORTEX INTELLIGENCE</span>
+      <div style="flex:1;"></div>
+      <span style="font-family:'Open Sans',sans-serif;font-size:12px;color:#aaa5b0;">Growth</span>
+      <div class="avatar">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="7" r="3.5" stroke="white" stroke-width="1.5"/>
+          <path d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6"
+                stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- body -->
+    <div class="dash-body">
+      <div class="dash-inner">
+
+        <div class="dash-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M3 12l4-4 4 4 6-8" stroke="#5c33c7" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3 20h18" stroke="#5c33c7" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <p class="dash-title">Bem-vindo ao Growth</p>
+        <p class="dash-sub">Esta é uma tela placeholder.<br>O dashboard real será construído aqui.</p>
+
+        <div class="dash-grid">
+          <div class="dash-card">
+            <p class="dash-card-label">TERRITÓRIOS</p>
+            <p class="dash-card-value">—</p>
+          </div>
+          <div class="dash-card">
+            <p class="dash-card-label">PROSPECTOS</p>
+            <p class="dash-card-value">—</p>
+          </div>
+          <div class="dash-card">
+            <p class="dash-card-label">CONVERSÃO</p>
+            <p class="dash-card-value">—</p>
+          </div>
+        </div>
+
+        <button class="btn-ghost" onclick="goTo('screen-login')">
+          ← Voltar ao login
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    function goTo(id) {
+      document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.style.display = 'none';
+      });
+      const target = document.getElementById(id);
+      target.style.display = id === 'screen-dashboard' ? 'flex' : 'flex';
+      // force reflow for animation
+      void target.offsetWidth;
+      target.classList.add('active');
+    }
+
+    function toggleSenha() {
+      const input = document.getElementById('input-senha');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    function handleLogin() {
+      const email = document.getElementById('input-email').value.trim();
+      const senha = document.getElementById('input-senha').value.trim();
+      const fEmail = document.getElementById('field-email');
+      const fSenha = document.getElementById('field-senha');
+      const btn    = document.getElementById('btn-entrar');
+      const card   = document.getElementById('login-card');
+
+      fEmail.classList.remove('error');
+      fSenha.classList.remove('error');
+
+      let ok = true;
+      if (!email) { fEmail.classList.add('error'); ok = false; }
+      if (!senha)  { fSenha.classList.add('error');  ok = false; }
+
+      if (!ok) {
+        card.classList.remove('shake');
+        void card.offsetWidth;
+        card.classList.add('shake');
+        card.addEventListener('animationend', () => card.classList.remove('shake'), { once: true });
+        return;
+      }
+
+      btn.textContent = 'Entrando…';
+      btn.disabled = true;
+      setTimeout(() => goTo('screen-dashboard'), 700);
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter' &&
+          document.getElementById('screen-login').classList.contains('active')) {
+        handleLogin();
+      }
+    });
+  </script>
+</body>
+</html>

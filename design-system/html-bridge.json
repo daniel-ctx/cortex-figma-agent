@@ -1,0 +1,152 @@
+{
+  "_meta": {
+    "updatedAt": "2026-04-16",
+    "note": "Mapeamento Claude System → HTML+Tailwind. Cada entrada correlaciona o nome exato do componente (como retornado por get_design_context) com a classe semântica em cortex-components.css e um snippet HTML base. Expandir conforme novos componentes forem encontrados nos protótipos."
+  },
+  "components": {
+
+    "Button": {
+      "category": "buttons",
+      "tailwindClass": "btn-primary",
+      "html": "<button class=\"btn-primary\">{label}</button>",
+      "variants": {
+        "Type=Primary":   "btn-primary",
+        "Type=Secondary": "btn-secondary",
+        "Type=Ghost":     "btn-ghost",
+        "Type=Danger":    "btn-primary bg-error hover:bg-red-600"
+      }
+    },
+
+    "Icon Button": {
+      "category": "buttons",
+      "tailwindClass": "btn-icon",
+      "html": "<button class=\"btn-icon\" aria-label=\"{label}\"><svg class=\"w-5 h-5\" /></button>"
+    },
+
+    "Floating Action Button": {
+      "category": "buttons",
+      "tailwindClass": "btn-primary",
+      "html": "<button class=\"btn-primary w-14 h-14 rounded-full shadow-lg fixed bottom-6 right-6\"><svg class=\"w-6 h-6\" /></button>"
+    },
+
+    "Input Text": {
+      "category": "inputs",
+      "tailwindClass": "input-text",
+      "html": "<div class=\"input-field\"><label class=\"input-label\">{label}</label><input type=\"text\" class=\"input-text\" placeholder=\"{placeholder}\"></div>"
+    },
+
+    "Input Select": {
+      "category": "inputs",
+      "tailwindClass": "input-select",
+      "html": "<div class=\"input-field\"><label class=\"input-label\">{label}</label><select class=\"input-select\"><option>{option}</option></select></div>"
+    },
+
+    "Dropdown Tags": {
+      "category": "inputs",
+      "tailwindClass": "input-select",
+      "html": "<div class=\"input-field\"><label class=\"input-label\">{label}</label><div class=\"input-text flex flex-wrap gap-1 min-h-[38px]\"><span class=\"chip-primary\">{tag}</span></div></div>"
+    },
+
+    "Checkbox": {
+      "category": "inputs",
+      "tailwindClass": "checkbox",
+      "html": "<label class=\"checkbox-label\"><input type=\"checkbox\" class=\"checkbox\"><span>{label}</span></label>"
+    },
+
+    "Radio Option": {
+      "category": "inputs",
+      "tailwindClass": "radio",
+      "html": "<label class=\"radio-label\"><input type=\"radio\" class=\"radio\" name=\"{group}\"><span>{label}</span></label>"
+    },
+
+    "Multiselect": {
+      "category": "inputs",
+      "tailwindClass": "input-select",
+      "html": "<div class=\"input-field\"><label class=\"input-label\">{label}</label><select class=\"input-select\" multiple>{options}</select></div>"
+    },
+
+    "Form / Datepicker / Open Datepicker": {
+      "category": "inputs",
+      "tailwindClass": "input-text",
+      "html": "<div class=\"input-field\"><label class=\"input-label\">{label}</label><input type=\"date\" class=\"input-text\"></div>"
+    },
+
+    "Form / Input / Slider": {
+      "category": "inputs",
+      "tailwindClass": "slider",
+      "html": "<div class=\"input-field\"><label class=\"input-label\">{label}</label><input type=\"range\" class=\"slider\" min=\"{min}\" max=\"{max}\"></div>"
+    },
+
+    "Form / Filter / Filter Component": {
+      "category": "inputs",
+      "tailwindClass": "input-text",
+      "html": "<div class=\"input-field\"><label class=\"input-label\">{label}</label><input type=\"text\" class=\"input-text\" placeholder=\"Filtrar...\"></div>"
+    },
+
+    "Tab Group": {
+      "category": "navigation",
+      "tailwindClass": "tab-bar",
+      "html": "<div class=\"tab-bar\"><button class=\"tab-item--active\">{tab1}</button><button class=\"tab-item--default\">{tab2}</button></div>"
+    },
+
+    "Menu Item": {
+      "category": "navigation",
+      "tailwindClass": "menu-item",
+      "html": "<a class=\"menu-item\"><span class=\"w-5 h-5\"></span><span>{label}</span></a>"
+    },
+
+    "new-header": {
+      "category": "navigation",
+      "tailwindClass": "app-header",
+      "html": "<header class=\"app-header\"><div class=\"font-heading font-semibold text-dark-gray\">{title}</div><div class=\"flex items-center gap-3\">{actions}</div></header>"
+    },
+
+    "Table": {
+      "category": "data_display",
+      "tailwindClass": "table-default",
+      "html": "<div class=\"overflow-x-auto\"><table class=\"table-default\"><thead><tr><th>{col1}</th><th>{col2}</th></tr></thead><tbody><tr><td>{cell}</td><td>{cell}</td></tr></tbody></table></div>"
+    },
+
+    "Grid / Grid No Footer": {
+      "category": "data_display",
+      "tailwindClass": "table-default",
+      "html": "<div class=\"overflow-x-auto\"><table class=\"table-default\"><thead><tr><th>{col1}</th></tr></thead><tbody><tr><td>{cell}</td></tr></tbody></table></div>"
+    },
+
+    "Grid / Filter Grid": {
+      "category": "data_display",
+      "tailwindClass": "table-default",
+      "html": "<div class=\"flex flex-col gap-3\"><div class=\"flex items-center gap-2\"><input class=\"input-text max-w-xs\" placeholder=\"Buscar...\"></div><table class=\"table-default\"></table></div>"
+    },
+
+    "Spinner": {
+      "category": "feedback",
+      "tailwindClass": "spinner",
+      "html": "<div class=\"spinner\" role=\"status\" aria-label=\"Carregando\"></div>"
+    },
+
+    "Skeleton": {
+      "category": "feedback",
+      "tailwindClass": "skeleton",
+      "html": "<div class=\"skeleton h-4 w-full rounded\"></div>"
+    },
+
+    "Context Modal": {
+      "category": "feedback",
+      "tailwindClass": "dropdown-menu",
+      "html": "<div class=\"dropdown-menu\"><button class=\"dropdown-item\">{item1}</button><button class=\"dropdown-item\">{item2}</button></div>"
+    },
+
+    "Dialog": {
+      "category": "overlays",
+      "tailwindClass": "dialog-box",
+      "html": "<div class=\"dialog-overlay\"><div class=\"dialog-box\"><div class=\"dialog-header\"><h2 class=\"dialog-title\">{title}</h2></div><p class=\"text-sm text-neutral-500\">{body}</p><div class=\"dialog-footer\"><button class=\"btn-ghost\">{cancel}</button><button class=\"btn-primary\">{confirm}</button></div></div></div>"
+    },
+
+    "Dialog / Alert Dialog": {
+      "category": "overlays",
+      "tailwindClass": "dialog-box",
+      "html": "<div class=\"dialog-overlay\"><div class=\"dialog-box\"><div class=\"dialog-header\"><h2 class=\"dialog-title\">{title}</h2></div><p class=\"text-sm text-neutral-500\">{message}</p><div class=\"dialog-footer\"><button class=\"btn-ghost\">{cancel}</button><button class=\"btn-primary bg-error hover:bg-red-600\">{confirm}</button></div></div></div>"
+    }
+  }
+}

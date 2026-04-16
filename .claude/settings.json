@@ -16,6 +16,9 @@
       "Bash(chmod:*)",
       "Bash(source:*)",
       "Bash(export:*)",
+      "Bash(open:*)",
+      "Bash(mkdir:*)",
+      "Bash(touch:*)",
       "Skill(update-config)",
       "Skill(update-config:*)"
     ]
